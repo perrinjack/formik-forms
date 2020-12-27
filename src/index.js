@@ -3,13 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Container from '@material-ui/core/Container';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Container maxWidth="sm">
-      <App />
-    </Container>
+    <App style={{ backgroundColor: 'pink' }} />
   </React.StrictMode>,
   document.getElementById('root')
 );
