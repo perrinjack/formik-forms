@@ -79,7 +79,7 @@ function SignupForm() {
             lastName: Yup.string().required('Last name is required'),
             username: Yup.string()
               .required('Please enter your Username')
-              .matches(/^@/, 'Username must begin with @')
+              .matches(/^@/, 'Username must begin with @').matches(/\b[a-zA-Z0-9_]+\b$/, 'Username must be one word')
               .min(4, 'Username must be between 4 and 14 letters')
               .max(14, 'Username must be between 4 and 14 letters'),
           })}
