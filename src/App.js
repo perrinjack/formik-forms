@@ -21,6 +21,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  valid: {
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'green',
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'green !important',
+    },
+  },
   avatar: {
     margin: theme.spacing(1),
 
@@ -39,10 +47,6 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     width: '100%', // Fix IE 11 issue.
-  
-  },
-  link: {
-    color: 'rgba(255, 255, 255, 0.7)', // Fix IE 11 issue.
   },
 }));
 function SignupForm() {
@@ -73,6 +77,11 @@ function SignupForm() {
               .required('Password confirm is required'),
             firstName: Yup.string().required('First name is required'),
             lastName: Yup.string().required('Last name is required'),
+            username: Yup.string()
+              .required('Please enter your Username')
+              .matches(/^@/, 'Username must begin with @')
+              .min(4, 'Username must be between 4 and 14 letters')
+              .max(14, 'Username must be between 4 and 14 letters'),
           })}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
@@ -81,7 +90,7 @@ function SignupForm() {
             }, 500);
           }}
         >
-          {({ submitForm, isSubmitting }) => (
+          {(props: FormikProps<any>) => (
             <div className={classes.root}>
               <Paper className={classes.paper} elevation={6}>
                 <Avatar className={classes.avatar}>
@@ -100,7 +109,21 @@ function SignupForm() {
                         fullWidth
                         variant="outlined"
                         placeholder="Elon"
-                        className={classes.text}
+                        className={
+                          props.touched['firstName'] &&
+                          !props.errors['firstName']
+                            ? classes.valid
+                            : null
+                        }
+                        InputLabelProps={{
+                          style: {
+                            color:
+                              props.touched['firstName'] &&
+                              !props.errors['firstName']
+                                ? 'green'
+                                : null,
+                          },
+                        }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -111,6 +134,20 @@ function SignupForm() {
                         fullWidth
                         placeholder="Musk"
                         variant="outlined"
+                        InputLabelProps={{
+                          style: {
+                            color:
+                              props.touched['lastName'] &&
+                              !props.errors['lastName']
+                                ? 'green'
+                                : null,
+                          },
+                        }}
+                        className={
+                          props.touched['lastName'] && !props.errors['lastName']
+                            ? classes.valid
+                            : null
+                        }
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -122,6 +159,20 @@ function SignupForm() {
                         placeholder="@perrinjack96"
                         fullWidth
                         variant="outlined"
+                        InputLabelProps={{
+                          style: {
+                            color:
+                              props.touched['username'] &&
+                              !props.errors['username']
+                                ? 'green'
+                                : null,
+                          },
+                        }}
+                        className={
+                          props.touched['username'] && !props.errors['username']
+                            ? classes.valid
+                            : null
+                        }
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -132,6 +183,19 @@ function SignupForm() {
                         label="Email"
                         fullWidth
                         variant="outlined"
+                        InputLabelProps={{
+                          style: {
+                            color:
+                              props.touched['email'] && !props.errors['email']
+                                ? 'green'
+                                : null,
+                          },
+                        }}
+                        className={
+                          props.touched['email'] && !props.errors['email']
+                            ? classes.valid
+                            : null
+                        }
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -142,6 +206,20 @@ function SignupForm() {
                         name="password"
                         fullWidth
                         variant="outlined"
+                        InputLabelProps={{
+                          style: {
+                            color:
+                              props.touched['password'] &&
+                              !props.errors['password']
+                                ? 'green'
+                                : null,
+                          },
+                        }}
+                        className={
+                          props.touched['password'] && !props.errors['password']
+                            ? classes.valid
+                            : null
+                        }
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -152,6 +230,21 @@ function SignupForm() {
                         name="passwordConfirm"
                         fullWidth
                         variant="outlined"
+                        InputLabelProps={{
+                          style: {
+                            color:
+                              props.touched['passwordConfirm'] &&
+                              !props.errors['passwordConfirm']
+                                ? 'green'
+                                : null,
+                          },
+                        }}
+                        className={
+                          props.touched['passwordConfirm'] &&
+                          !props.errors['passwordConfirm']
+                            ? classes.valid
+                            : null
+                        }
                       />
                     </Grid>
 
@@ -160,8 +253,13 @@ function SignupForm() {
                         variant="contained"
                         color="primary"
                         fullWidth
-                        disabled={isSubmitting}
-                        onClick={submitForm}
+                        disabled={
+                          !(
+                            props.isValid &&
+                            Object.keys(props.touched).length > 1
+                          ) | props.isSubmitting
+                        }
+                        onClick={props.submitForm}
                       >
                         Submit
                       </Button>
