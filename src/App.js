@@ -64,7 +64,7 @@ function SignupForm() {
           }}
           validationSchema={Yup.object({
             email: Yup.string()
-              .email('Invalid email address')
+              .email('✘ Invalid email address')
               .required('Email is required'),
             password: Yup.string()
               .required('Password is required')
@@ -79,7 +79,8 @@ function SignupForm() {
             lastName: Yup.string().required('Last name is required'),
             username: Yup.string()
               .required('Please enter your Username')
-              .matches(/^@/, 'Username must begin with @').matches(/\b[a-zA-Z0-9_]+\b$/, 'Username must be one word')
+              .matches(/^@/, 'Username must begin with @')
+              .matches(/\b[a-zA-Z0-9_]+\b$/, 'Username must be one word')
               .min(4, 'Username must be between 4 and 14 letters')
               .max(14, 'Username must be between 4 and 14 letters'),
           })}
@@ -92,6 +93,7 @@ function SignupForm() {
         >
           {(props: FormikProps<any>) => (
             <div className={classes.root}>
+              {props.isValidating && <h1>Validating</h1>}
               <Paper className={classes.paper} elevation={6}>
                 <Avatar className={classes.avatar}>
                   <LockOutlinedIcon />
@@ -105,13 +107,16 @@ function SignupForm() {
                       <Field
                         component={TextField}
                         name="firstName"
-                        label="First Name"
+                        label={
+                          props.touched.firstName && !props.errors.firstName
+                            ? 'First Name ✓'
+                            : 'First Name'
+                        }
                         fullWidth
                         variant="outlined"
                         placeholder="Elon"
                         className={
-                          props.touched['firstName'] &&
-                          !props.errors['firstName']
+                          props.touched.firstName && !props.errors.firstName
                             ? classes.valid
                             : null
                         }
@@ -130,21 +135,24 @@ function SignupForm() {
                       <Field
                         component={TextField}
                         name="lastName"
-                        label="Last Name"
+                        label={
+                          props.touched.lastName && !props.errors.lastName
+                            ? 'Last Name ✓'
+                            : 'Last Name'
+                        }
                         fullWidth
                         placeholder="Musk"
                         variant="outlined"
                         InputLabelProps={{
                           style: {
                             color:
-                              props.touched['lastName'] &&
-                              !props.errors['lastName']
+                              props.touched.lastName && !props.errors.lastName
                                 ? 'green'
                                 : null,
                           },
                         }}
                         className={
-                          props.touched['lastName'] && !props.errors['lastName']
+                          props.touched.lastName && !props.errors.lastName
                             ? classes.valid
                             : null
                         }
@@ -155,21 +163,24 @@ function SignupForm() {
                         component={TextField}
                         name="username"
                         type="text"
-                        label="Username"
+                        label={
+                          props.touched.username && !props.errors.username
+                            ? 'Username ✓'
+                            : 'Username'
+                        }
                         placeholder="@perrinjack96"
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{
                           style: {
                             color:
-                              props.touched['username'] &&
-                              !props.errors['username']
+                              props.touched.username && !props.errors.username
                                 ? 'green'
                                 : null,
                           },
                         }}
                         className={
-                          props.touched['username'] && !props.errors['username']
+                          props.touched.username && !props.errors.username
                             ? classes.valid
                             : null
                         }
@@ -180,19 +191,23 @@ function SignupForm() {
                         component={TextField}
                         name="email"
                         type="email"
-                        label="Email"
+                        label={
+                          props.touched.email && !props.errors.email
+                            ? 'Email ✓'
+                            : 'Email'
+                        }
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{
                           style: {
                             color:
-                              props.touched['email'] && !props.errors['email']
+                              props.touched.email && !props.errors.email
                                 ? 'green'
                                 : null,
                           },
                         }}
                         className={
-                          props.touched['email'] && !props.errors['email']
+                          props.touched.email && !props.errors.email
                             ? classes.valid
                             : null
                         }
@@ -202,21 +217,24 @@ function SignupForm() {
                       <Field
                         component={TextField}
                         type="password"
-                        label="Password"
+                        label={
+                          props.touched.password && !props.errors.password
+                            ? 'Password ✓'
+                            : 'Password'
+                        }
                         name="password"
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{
                           style: {
                             color:
-                              props.touched['password'] &&
-                              !props.errors['password']
+                              props.touched.password && !props.errors.password
                                 ? 'green'
                                 : null,
                           },
                         }}
                         className={
-                          props.touched['password'] && !props.errors['password']
+                          props.touched.password && !props.errors.password
                             ? classes.valid
                             : null
                         }
@@ -226,22 +244,27 @@ function SignupForm() {
                       <Field
                         component={TextField}
                         type="password"
-                        label="Confirm Password"
+                        label={
+                          props.touched.passwordConfirm &&
+                          !props.errors.passwordConfirm
+                            ? 'Passwords Match ✓'
+                            : 'Password'
+                        }
                         name="passwordConfirm"
                         fullWidth
                         variant="outlined"
                         InputLabelProps={{
                           style: {
                             color:
-                              props.touched['passwordConfirm'] &&
-                              !props.errors['passwordConfirm']
+                              props.touched.passwordConfirm &&
+                              !props.errors.passwordConfirm
                                 ? 'green'
                                 : null,
                           },
                         }}
                         className={
-                          props.touched['passwordConfirm'] &&
-                          !props.errors['passwordConfirm']
+                          props.touched.passwordConfirm &&
+                          !props.errors.passwordConfirm
                             ? classes.valid
                             : null
                         }
