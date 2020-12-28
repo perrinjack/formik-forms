@@ -11,7 +11,16 @@ import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import FilledInput from '@material-ui/core/FilledInput';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Visibility from '@material-ui/icons/Visibility';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(8),
@@ -51,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 function SignupForm() {
   const classes = useStyles();
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <div>
       <Container maxWidth="xs" component="main">
@@ -123,8 +137,7 @@ function SignupForm() {
                         InputLabelProps={{
                           style: {
                             color:
-                              props.touched['firstName'] &&
-                              !props.errors['firstName']
+                              props.touched.firstName && !props.errors.firstName
                                 ? 'green'
                                 : null,
                           },
@@ -215,8 +228,24 @@ function SignupForm() {
                     </Grid>
                     <Grid item xs={12}>
                       <Field
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                              >
+                                {showPassword ? (
+                                  <Visibility />
+                                ) : (
+                                  <VisibilityOff />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                         component={TextField}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         label={
                           props.touched.password && !props.errors.password
                             ? 'Password ✓'
@@ -248,7 +277,7 @@ function SignupForm() {
                           props.touched.passwordConfirm &&
                           !props.errors.passwordConfirm
                             ? 'Passwords Match ✓'
-                            : 'Password'
+                            : 'Confirm Password'
                         }
                         name="passwordConfirm"
                         fullWidth
