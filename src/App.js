@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Formik, Form, Field} from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,11 +24,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
 
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   paper: {
-    padding: theme.spacing(1),
-    background: '#66A5AD',
+    padding: theme.spacing(2),
+    background: '#424242',
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
@@ -37,17 +37,24 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+  text: {
+    width: '100%', // Fix IE 11 issue.
+  
+  },
+  link: {
+    color: 'rgba(255, 255, 255, 0.7)', // Fix IE 11 issue.
+  },
 }));
 function SignupForm() {
   const classes = useStyles();
   return (
     <div>
       <Container maxWidth="xs" component="main">
-        {/* <Paper variant="outlined" className={classes.root} elevation={0}> */}
         <Formik
           initialValues={{
             email: '',
             password: '',
+            passwordConfirm: '',
             firstName: '',
             lastName: '',
           }}
@@ -61,6 +68,9 @@ function SignupForm() {
                 /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
                 'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
               ),
+            passwordConfirm: Yup.string()
+              .oneOf([Yup.ref('password'), null], "Passwords don't match")
+              .required('Password confirm is required'),
             firstName: Yup.string().required('First name is required'),
             lastName: Yup.string().required('Last name is required'),
           })}
@@ -89,6 +99,8 @@ function SignupForm() {
                         label="First Name"
                         fullWidth
                         variant="outlined"
+                        placeholder="Elon"
+                        className={classes.text}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -96,6 +108,18 @@ function SignupForm() {
                         component={TextField}
                         name="lastName"
                         label="Last Name"
+                        fullWidth
+                        placeholder="Musk"
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        component={TextField}
+                        name="username"
+                        type="text"
+                        label="Username"
+                        placeholder="@perrinjack96"
                         fullWidth
                         variant="outlined"
                       />
@@ -120,6 +144,16 @@ function SignupForm() {
                         variant="outlined"
                       />
                     </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        component={TextField}
+                        type="password"
+                        label="Confirm Password"
+                        name="passwordConfirm"
+                        fullWidth
+                        variant="outlined"
+                      />
+                    </Grid>
 
                     <Grid item xs={12}>
                       <Button
@@ -128,7 +162,6 @@ function SignupForm() {
                         fullWidth
                         disabled={isSubmitting}
                         onClick={submitForm}
-                        className={classes.submit}
                       >
                         Submit
                       </Button>
@@ -156,7 +189,6 @@ function SignupForm() {
             </div>
           )}
         </Formik>
-        {/* </Paper> */}
       </Container>
     </div>
   );

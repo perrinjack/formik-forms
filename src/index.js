@@ -3,10 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { lightBlue } from '@material-ui/core/colors';
+const darkTheme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: lightBlue,
+  },
+});
 ReactDOM.render(
   <React.StrictMode>
-    <App style={{ backgroundColor: 'pink' }} />
+    <ThemeProvider theme={darkTheme}>
+      <App style={{ backgroundColor: 'pink' }} />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
