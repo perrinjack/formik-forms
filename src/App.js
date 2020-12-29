@@ -15,6 +15,29 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Visibility from '@material-ui/icons/Visibility';
+
+Yup.addMethod(Yup.string, 'phone', function (message) {
+  return this.test({
+    name: 'phone',
+    message: message || 'Username is Taken', // expect an i18n message to be passed in
+    test: async function (value) {
+      const response = await fetch(`/validators/phone?value=${value}`);
+      const array = ['@perrinjack96'];
+      var x = await resolveAfter2Seconds(true, array, value);
+      // return
+      return x;
+    },
+  });
+});
+
+function resolveAfter2Seconds(x, array, value) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(!array.includes(value));
+    }, 122.4);
+  });
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(8),
@@ -86,7 +109,8 @@ function SignupForm() {
               .matches(/^@/, 'Username must begin with @')
               .matches(/\b[a-zA-Z0-9_]+\b$/, 'Username must be one word')
               .min(4, 'Username must be between 4 and 14 letters')
-              .max(14, 'Username must be between 4 and 14 letters'),
+              .max(14, 'Username must be between 4 and 14 letters')
+              .phone('That Username Looks to be taken'),
           })}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
@@ -97,7 +121,6 @@ function SignupForm() {
         >
           {(props: FormikProps<any>) => (
             <div className={classes.root}>
-              {props.isValidating && <h1>Validating</h1>}
               <Paper className={classes.paper} elevation={6}>
                 <Avatar className={classes.avatar}>
                   <LockOutlinedIcon />
